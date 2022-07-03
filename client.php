@@ -33,10 +33,12 @@ while (true) {
             break;
         }
 
+        $aux = explode(".",$path);
+
 
         $ch = curl_init( "http://localhost:3000/escribir" );
         
-        $payload = json_encode( array( "path"=> $path . "_copia_server", "buffer"=> $body ) );
+        $payload = json_encode( array( "path"=> $aux[0]. "_copia_server" . ( empty($aux[1]) ? "" : "." .$aux[1] ), "buffer"=> $body ) );
         curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
         curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
  
@@ -48,7 +50,7 @@ while (true) {
      
 
 
-        $file = fopen($path. "_copia_client", 'a');
+        $file = fopen($aux[0] . "_copia_client" . ( empty($aux[1]) ? "" :"." . $aux[1] ) , 'a');
 
         fwrite( $file, $body);
         fclose($file);
